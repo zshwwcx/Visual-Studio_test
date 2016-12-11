@@ -8,7 +8,7 @@ server_host='localhost'
 server_port=50007
 buff=1024
 slavery_host='localhost'
-slavery_port=8888
+slavery_port=[8880,8881,8882,8883,8884]
 
 
 def show_time_now():
@@ -20,6 +20,7 @@ def client_func(sock1):
         data=sock1.recv(buff)
         if not data:
             break
+        #if data=='host name:'
         print(data.decode())
     sock1.close()
     
@@ -35,7 +36,7 @@ def client_upload():
             root2.mainloop()
         #upload_success()
        
-        sock1.connect((slavery_host,slavery_port))
+        sock1.connect((slavery_host,8888))
         if value not in os.listdir():
             print('Error:No such file in the directory.\n')
         else:
@@ -93,28 +94,34 @@ root=Tk()
 root.title('ftp_gui')
 
 #show welcome infomation in the gui
-welcome_label=Label(root,text='Welcome for using ftp_test app.')
+welcome_label=Label(root,text='Welcome for using ftp_test app.',font=("times", 20, "bold"))
 welcome_label.grid(row=0,column=0)
 
 #show time in the gui
-time_label=Label(root,text='Time:')
+time_label=Label(root,text='Time:',font=("times", 15, "bold"))
 time_label.grid(row=1,column=0)
 time_now=show_time_now()
 now_label=Label(root)
-now_label.config(text=time_now)
+now_label.config(text=time_now,font=("times", 15, "bold"))
 now_label.grid(row=1,column=1)
+
+#authention of the programme
+author_label=Label(root,text='author:Suohao Zhang')
+author_label.grid(row=4,column=0)
+version_label=Label(root,text='verision:v1.0')
+version_label.grid(row=5,column=0)
 
 #The button show in gui
 login_button=Button(root,text='Login',command=(lambda:thread.start_new_thread(client_func,(sock,))))
-login_button.grid(row=2,column=2)
+login_button.grid(row=8,column=2)
 
 upload_button=Button(root,text='Upload',command=client_upload)
-upload_button.grid(row=2,column=3)
+upload_button.grid(row=8,column=3)
 
 download_button=Button(root,text='Download',command=client_download)
-download_button.grid(row=2,column=4)
+download_button.grid(row=8,column=4)
 
 exit_button=Button(root,text='Exit',command=sys.exit)
-exit_button.grid(row=2,column=5)
+exit_button.grid(row=8,column=5)
 
 root.mainloop()
